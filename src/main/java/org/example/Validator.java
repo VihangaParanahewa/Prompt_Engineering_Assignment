@@ -14,7 +14,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validator {
+public class Validator
+{
 
     /**
      * Regular expression pattern for validating email addresses.
@@ -57,94 +58,115 @@ public class Validator {
      */
     private static final String NUMERIC_REGEX = "-?\\d+";
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    private static final Pattern EMAIL_PATTERN = Pattern.compile( EMAIL_REGEX );
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile( PASSWORD_REGEX );
 
     // Define a map to store country codes and names
-    private static final Map<String, String> COUNTRY_CODE_MAP = createCountryCodeMap();
+    private static final Map<String,String> COUNTRY_CODE_MAP = createCountryCodeMap();
 
     /**
      * Validates an email address using a regular expression pattern.
+     *
      * @param email The email address to validate.
      * @return {@code true} if the email address is valid, {@code false} otherwise.
      */
-    public static boolean validateEmail(String email) {
-        if (email == null || email.isEmpty()) {
+    public static boolean validateEmail( String email )
+    {
+        if( email == null || email.isEmpty() )
+        {
             return false; // Null or empty string is not a valid email
         }
 
-        Matcher matcher = EMAIL_PATTERN.matcher(email.trim()); // Trim to remove leading/trailing whitespace
+        Matcher matcher = EMAIL_PATTERN.matcher( email.trim() ); // Trim to remove leading/trailing whitespace
         return matcher.matches();
     }
 
     /**
      * Validates a password using a regular expression pattern.
+     *
      * @param password The password to validate.
      * @return {@code true} if the password is valid, {@code false} otherwise.
      */
-    public static boolean validatePassword(String password) {
-        if (password == null || password.trim().isEmpty()) {
+    public static boolean validatePassword( String password )
+    {
+        if( password == null || password.trim().isEmpty() )
+        {
             return false; // Null or empty string is not a valid password
         }
 
-        Matcher matcher = PASSWORD_PATTERN.matcher(password);
+        Matcher matcher = PASSWORD_PATTERN.matcher( password );
         return matcher.matches();
     }
 
     /**
      * Validates a date of birth string.
+     *
      * @param dob The date of birth string to validate.
      * @return {@code true} if the date of birth is valid, {@code false} otherwise.
      */
-    public static boolean validateDOB(String dob) {
-        if (dob == null || dob.trim().isEmpty()) {
+    public static boolean validateDOB( String dob )
+    {
+        if( dob == null || dob.trim().isEmpty() )
+        {
             return false; // Null or empty string is not a valid date of birth
         }
 
-        try {
+        try
+        {
             // Attempt to parse the date string into a LocalDate object using ISO_LOCAL_DATE format
-            LocalDate parsedDate = LocalDate.parse(dob, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate parsedDate = LocalDate.parse( dob, DateTimeFormatter.ISO_LOCAL_DATE );
             // Get the current date
             LocalDate currentDate = LocalDate.now();
 
             // Assuming DOB must be a date in the past and within a reasonable range
             // Check if the parsed date is not after the current date and the year is not earlier than 1900
-            return !parsedDate.isAfter(currentDate) && parsedDate.getYear() >= 1900;
-        } catch (DateTimeParseException e) {
+            return !parsedDate.isAfter( currentDate ) && parsedDate.getYear() >= 1900;
+        }
+        catch( DateTimeParseException e )
+        {
             // If an exception occurs during parsing, consider the date of birth as invalid
-            System.out.println(e.getMessage());
+            System.out.println( e.getMessage() );
             return false;
         }
     }
 
     /**
      * Validates a date and time string.
+     *
      * @param dateTime The date and time string to validate.
      * @return {@code true} if the date and time are valid, {@code false} otherwise.
      */
-    public static boolean validateDateTime(String dateTime) {
-        if (dateTime == null || dateTime.trim().isEmpty()) {
+    public static boolean validateDateTime( String dateTime )
+    {
+        if( dateTime == null || dateTime.trim().isEmpty() )
+        {
             return false; // Null or empty string is not a valid datetime
         }
 
-        try {
-            LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        try
+        {
+            LocalDateTime.parse( dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME );
             // Check if the parsed datetime falls within a reasonable range
             return true; // Assuming all valid datetime formats are acceptable
-        } catch (DateTimeParseException e) {
-            System.out.println(e.getMessage());
+        }
+        catch( DateTimeParseException e )
+        {
+            System.out.println( e.getMessage() );
             return false;
         }
     }
 
     /**
      * Validates a country name string.
+     *
      * @param country The country name string to validate.
      * @return {@code true} if the country name is valid, {@code false} otherwise.
      */
-    public static boolean validateCountry(String country) {
-        if (country == null || country.trim().isEmpty()) {
+    public static boolean validateCountry( String country )
+    {
+        if( country == null || country.trim().isEmpty() )
+        {
             return false; // Null or empty string is not a valid country name
         }
 
@@ -152,58 +174,70 @@ public class Validator {
         String countryLowerCase = country.trim().toLowerCase();
 
         // Check if the lowercase country name exists in the map
-        return COUNTRY_CODE_MAP.containsKey(countryLowerCase);
+        return COUNTRY_CODE_MAP.containsKey( countryLowerCase );
     }
 
     /**
      * Validates a URL string.
+     *
      * @param url The URL string to validate.
      * @return {@code true} if the URL is valid, {@code false} otherwise.
      */
-    public static boolean validateURL(String url) {
-        if (url == null || url.trim().isEmpty()) {
+    public static boolean validateURL( String url )
+    {
+        if( url == null || url.trim().isEmpty() )
+        {
             return false; // Null or empty string is not a valid URL
         }
 
-        try {
-            URI uri = new URI(url);
+        try
+        {
+            URI uri = new URI( url );
             // Check if the scheme (protocol) is present in the URI
             return uri.getScheme() != null;
-        } catch (URISyntaxException e) {
+        }
+        catch( URISyntaxException e )
+        {
             // If an exception occurs during URL creation, consider the URL as invalid
-            System.out.println(e.getMessage());
+            System.out.println( e.getMessage() );
             return false;
         }
     }
 
     /**
      * Validates a string to ensure it contains only alphabetic characters.
+     *
      * @param input The string to validate.
      * @return {@code true} if the string is valid and contains only alphabetic characters, {@code false} otherwise.
      */
-    public static boolean validateString(String input) {
+    public static boolean validateString( String input )
+    {
         // Check for null or empty string
-        if (input == null || input.isEmpty()) {
+        if( input == null || input.isEmpty() )
+        {
             return false;
         }
 
         // Check for non-alphabetic characters
-        return input.matches(ALPHABETIC_REGEX);
+        return input.matches( ALPHABETIC_REGEX );
     }
 
     /**
      * Validates a string to ensure it represents a valid number.
+     *
      * @param input The string to validate.
      * @return {@code true} if the string is valid and represents a number, {@code false} otherwise.
      */
-    public static boolean validateNumber(String input) {
+    public static boolean validateNumber( String input )
+    {
         // Check for null or empty string
-        if (input == null || input.isEmpty()) {
+        if( input == null || input.isEmpty() )
+        {
             return false;
         }
 
         // Check for non-numeric characters
-        return input.matches(NUMERIC_REGEX);
+        return input.matches( NUMERIC_REGEX );
     }
 
     /**
@@ -213,53 +247,56 @@ public class Validator {
      *
      * @return A map where country names are keys and country codes are values.
      */
-    private static Map<String, String> createCountryCodeMap() {
-        Map<String, String> countryCodeMap = new HashMap<>();
+    private static Map<String,String> createCountryCodeMap()
+    {
+        Map<String,String> countryCodeMap = new HashMap<>();
         String[] countryCodes = Locale.getISOCountries();
-        for (String countryCode : countryCodes) {
-            Locale locale = new Locale("", countryCode);
+        for( String countryCode : countryCodes )
+        {
+            Locale locale = new Locale( "", countryCode );
             String countryName = locale.getDisplayCountry();
-            countryCodeMap.put(countryName.toLowerCase(), countryCode);
+            countryCodeMap.put( countryName.toLowerCase(), countryCode );
         }
         return countryCodeMap;
     }
 
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void main( String[] args )
+    {
+        Scanner scanner = new Scanner( System.in );
 
         // Getting user inputs
-        System.out.print("Enter Email Address: ");
+        System.out.print( "Enter Email Address: " );
         String email = scanner.nextLine();
-        System.out.println("Email is valid: " + validateEmail(email));
+        System.out.println( "Email is valid: " + validateEmail( email ) );
 
-        System.out.print("Enter Password: ");
+        System.out.print( "Enter Password: " );
         String password = scanner.nextLine();
-        System.out.println("Password is valid: " + validatePassword(password));
+        System.out.println( "Password is valid: " + validatePassword( password ) );
 
-        System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
+        System.out.print( "Enter Date of Birth (yyyy-MM-dd): " );
         String dob = scanner.nextLine();
-        System.out.println("Date of Birth is valid: " + validateDOB(dob));
+        System.out.println( "Date of Birth is valid: " + validateDOB( dob ) );
 
-        System.out.print("Enter Date & Time (yyyy-MM-ddTHH:mm:ss): ");
+        System.out.print( "Enter Date & Time (yyyy-MM-ddTHH:mm:ss): " );
         String dateTime = scanner.nextLine();
-        System.out.println("Date & Time is valid: " + validateDateTime(dateTime));
+        System.out.println( "Date & Time is valid: " + validateDateTime( dateTime ) );
 
-        System.out.print("Enter Country: ");
+        System.out.print( "Enter Country: " );
         String country = scanner.nextLine();
-        System.out.println("Country is valid: " + validateCountry(country));
+        System.out.println( "Country is valid: " + validateCountry( country ) );
 
-        System.out.print("Enter Website URL: ");
+        System.out.print( "Enter Website URL: " );
         String url = scanner.nextLine();
-        System.out.println("URL is valid: " + validateURL(url));
+        System.out.println( "URL is valid: " + validateURL( url ) );
 
-        System.out.print("Enter String: ");
+        System.out.print( "Enter String: " );
         String stringInput = scanner.nextLine();
-        System.out.println("String is valid: " + validateString(stringInput));
+        System.out.println( "String is valid: " + validateString( stringInput ) );
 
-        System.out.print("Enter Number: ");
+        System.out.print( "Enter Number: " );
         String numberInput = scanner.nextLine();
-        System.out.println("Number is valid: " + validateNumber(numberInput));
+        System.out.println( "Number is valid: " + validateNumber( numberInput ) );
 
         // Close the scanner
         scanner.close();
